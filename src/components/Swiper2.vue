@@ -1,17 +1,10 @@
 <!-- The ref attr used to find the swiper instance -->
 <template>
-  <swiper :options="swiperOption" ref="mySwiper">
+  <swiper :options="swiperOption" ref="mySwiper" >
     <!-- slides -->
-    <swiper-slide>
-      <img src="@/assets/images/5.jpg" class="d-block w-100" alt="">
+    <swiper-slide v-for="(item,index) in sliders" :key="index">
+      <img :src="item" class="d-block w-100 h-100" alt="">
     </swiper-slide>
-    <swiper-slide>
-      <img src="@/assets/images/3.jpg" class="d-block w-100" alt="">
-    </swiper-slide>
-    <swiper-slide>
-      <img src="@/assets/images/4.jpg" class="d-block w-100" alt="">
-    </swiper-slide>
-    <!-- Optional controls -->
     <div class="swiper-pagination"  slot="pagination"></div>
   </swiper>
 </template>
@@ -19,11 +12,13 @@
 <script>
   export default {
     name: 'carrousel',
+    props:{
+      sliders:Array
+    },
     data() {
       const that = this;
       return {
         swiperOption: {
-          loop: true,
           autoplay: {
             delay: 4000,
             stopOnLastSlide: false
@@ -47,8 +42,10 @@
         return this.$refs.mySwiper.swiper
       }
     },
+    created() {
+    },
     mounted() {
-      this.swiper.slideTo(1, 4000, true)
+       this.swiper.slideTo(0, 4000, false)
     }
   }
 </script>

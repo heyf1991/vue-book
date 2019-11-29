@@ -34,6 +34,7 @@ export default {
     height: 50px;
     display: flex;
     border-top:1px solid #ccc;
+    background: #fff;
     a{
       display: flex;
       color:yellowgreen;
