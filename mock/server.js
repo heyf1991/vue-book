@@ -43,13 +43,16 @@ http.createServer((req,res)=>{
     return
   }
   if(pathname === '/book'){
-    let id = parseInt(query.id); 
-    console.log("请求方法", req.method);
-    
+    let id = query.id; 
     switch (req.method) {
       case "GET":
-        if (id) {
+        if (typeof id !== "undefined") {
           //有id就是获取某本图书
+          read(function(books) {
+            let book = books.find(item => String(item.bookId) === String(id));
+            if (!book) book = {}; //如果啥都没有就是{}
+            res.end(JSON.stringify(book));
+          });
         } else {
           //没有就是获取全部图书
           read(function(books) {
@@ -58,8 +61,43 @@ http.createServer((req,res)=>{
         }
         break;
       case "POST":
+        let str = ''
+        req.on('data',chunk=>{ //处理data的时候
+          str+=chunk //chunk就是我们传进来的数据data
+        })
+        req.on("end",()=>{ // 完成处理
+          let book = JSON.parse(str)
+          read(function(books){
+            book.bookId = books.length?books[books.length-1].bookId+1:1
+            books.push(book);
+            write(books,function(){
+              res.end(JSON.stringify(book));
+            })
+          })
+        });
         break;
       case "PUT":
+        if(id){ //获取了当前要修改的id 防止为空
+          let str = '';
+          id = parseInt(id);
+          req.on('data',chunk=>{
+            str += chunk;
+          })
+          req.on('end',()=>{
+            let book = JSON.parse(str) //book要改成什么样子
+            read(function(books){
+              books = books.map(item=>{
+                if(item.bookId===id){
+                  return book
+                }
+                return item;
+              })
+              write(books, function() {
+                res.end(JSON.stringify(book));
+              });
+            })
+          })
+        }
         break;
       case "OPTIONS":
         res.end(JSON.stringify({})); //删除操作返回一个空对象

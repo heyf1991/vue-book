@@ -1,18 +1,18 @@
 <template>
   <section>
-    <MHeader :back="true">列表页</MHeader>
+    <MHeader :back="true">列表</MHeader>
     <div class="content">
       <div class="booksList">
         <ul>
-          <li v-for="(book,index) in books" :key="index">
+          <router-link v-for="(book,index) in books" :key="index" tag="li" :to="{name:'detail',params:{bid:book.bookId}}">
             <img :src="book.bookCover"/>
             <div class="text">
               <h3><span>{{book.bookId}}</span>{{book.bookName}}</h3>
               <p>{{book.bookInfo}}</p>
               <b class="text-danger">￥{{book.bookPrice}}</b>
-              <button class="btn btn-warning" @click="deleted(book.bookId)">删除</button>
+              <button class="btn btn-warning" @click.stop="deleted(book.bookId)">删除</button>
             </div>
-          </li>
+          </router-link>
         </ul>
       </div>
     </div>

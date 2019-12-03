@@ -26,3 +26,18 @@ export let getBooks = ()=>{
 export let removeBooks = (id)=>{
   return axios.delete(`/book?id=${id}`);
 }
+
+//5. 查询某本图书
+export let findOneBooks = (id)=>{
+  return axios.get(`/book?id=${id}`);
+}
+
+//6. 更新某本图书
+export let updateOneBooks = (id,data)=>{
+  return axios.put(`/book?id=${id}`,data);
+}
+
+//6. 添加图书
+export let addBooks = (data)=>{
+  return axios.post(`/book`,data);
+}
