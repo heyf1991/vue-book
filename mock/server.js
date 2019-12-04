@@ -38,7 +38,16 @@ http.createServer((req,res)=>{
   if(pathname === '/hot'){
     read(function (books){
       let hot = books.reverse().slice(0,6)
-      res.end(JSON.stringify(hot))
+      setTimeout(() => {
+        res.end(JSON.stringify(hot));
+      }, 1000);
+    })
+    return
+  }
+  if (pathname === '/page') { //分页的 可加载更多
+    let offset = parseInt(query.offset) || 0
+    read(function(books){
+      
     })
     return
   }

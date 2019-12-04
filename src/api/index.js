@@ -16,7 +16,6 @@ export let getSliders = ()=>{
 export let getHot = ()=>{
   return axios.get("/hot");
 }
-
 //3. 获取所有图书信息
 export let getBooks = ()=>{
   return axios.get("/book");
@@ -40,4 +39,11 @@ export let updateOneBooks = (id,data)=>{
 //6. 添加图书
 export let addBooks = (data)=>{
   return axios.post(`/book`,data);
+}
+
+/*
+* 首页给一个全部加载完毕的效果
+*/
+export let getAll = ()=>{
+  return axios.all([getSliders(),getHot()]);
 }
