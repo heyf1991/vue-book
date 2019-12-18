@@ -18,7 +18,7 @@ function read(cb){
 function write(data,cb){
   fs.writeFile("./mock/book.json", JSON.stringify(data), cb);
 }
-
+let pageSize = 5 //每页显示5个
 http.createServer((req,res)=>{
   /* 跨域设置 */
   res.setHeader("Access-Control-Allow-Origin", "*"); // 设置可访问的源
@@ -47,7 +47,12 @@ http.createServer((req,res)=>{
   if (pathname === '/page') { //分页的 可加载更多
     let offset = parseInt(query.offset) || 0
     read(function(books){
-      
+      let result = books.reverse().slice(offset, offset+pageSize);
+      let hasMore = true; //默认有更多
+      if(books.length<=offset+pageSize){ //比如offset=20，20+5=25，25>24
+        hasMore = false;
+      }
+      res.end(JSON.stringify({ hasMore, books: result }));
     })
     return
   }
@@ -124,6 +129,24 @@ http.createServer((req,res)=>{
     }
     return
   }
+  // 读取一个路径
+  /* res.setHeader("Content-Type", "text/html; charset=utf-8");
+  fs.stat("." + pathname,function(err,stats){
+    if(err){
+      res.statusCode = 404
+      res.end('NOT FOUND')
+    }else{ //没有错误
+      if (stats.isDirectory()){
+        console.log("pathname是啥：", pathname);
+        let p = require("path").join("." + pathname,'./index.html');
+        console.log("11第一个是啥：", p);
+        fs.createReadStream("./mock/index.html").pipe(res);
+      }else{
+        console.log("11第2个是啥：", "." + pathname);
+        fs.createReadStream("./mock/index.html").pipe(res);
+      }
+    }
+  }); */
 }).listen(3000)
 
 /***

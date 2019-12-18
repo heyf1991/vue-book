@@ -47,3 +47,8 @@ export let addBooks = (data)=>{
 export let getAll = ()=>{
   return axios.all([getSliders(),getHot()]);
 }
+
+// 7. 分页查询
+export let pagination = (offset)=>{
+  return axios.get(`/page?offset=${offset}`);
+}
