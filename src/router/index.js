@@ -11,9 +11,9 @@ export default new Router({
       meta: { title: "添加" }
     },
     {
-      path: "/collect",
-      component: () => import("@/views/Collect.vue"),
-      meta: { title: "收藏" }
+      path: "/cart",
+      component: () => import("@/views/Cart.vue"),
+      meta: { title: "购物车" }
     },
     {
       path: "/detail/:bid",

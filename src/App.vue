@@ -28,7 +28,7 @@ export default {
   *,p{margin: 0; padding: 0}
   ul,li{list-style: none}
   a{text-decoration: none}
-  input,button{-webkit-appearance: none}
+  /* input,button{-webkit-appearance: none} */
   .content{
     position: fixed;
     top: 40px;

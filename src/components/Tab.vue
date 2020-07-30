@@ -6,9 +6,9 @@
     <router-link to="/list">
     <i class="iconfont icon-dingdan"></i>
     列表页</router-link>
-    <router-link to="/collect">
-    <i class="iconfont icon-xihuan"></i>
-    收藏</router-link>
+    <router-link to="/cart">
+    <i class="iconfont icon-3"></i>
+    购物车</router-link>
     <router-link to="/add">
     <i class="iconfont icon-jiahao"></i>
     添加</router-link>

@@ -10,8 +10,9 @@
               <div class="text">
                 <h3><span>{{book.bookId}}. </span>{{book.bookName}}</h3>
                 <p>{{book.bookInfo}}</p>
-                <b class="text-danger">￥{{book.bookPrice}}</b>
-                <button class="btn btn-warning" @click.stop="deleted(book.bookId)">删除</button>
+                <b class="text-danger">￥{{book.bookPrice}}</b><br>
+                <button class="btn btn-warning float-left" @click.stop="deleted(book.bookId)">删除</button>
+                <button class="btn btn-danger float-right mr-3" @click.stop="addToCart(book)"><i class="iconfont icon-3"></i></button>
               </div>
             </router-link>
           </transition-group>
@@ -25,16 +26,16 @@
   </section>
 </template>
 <script>
-import MHeader from '@/components/MHeader.vue'
-import {pagination,removeBooks} from '@/api'
+import MHeader from "@/components/MHeader.vue";
+import { pagination, removeBooks, toCart } from "@/api";
 export default {
   data() {
     return {
-      books:[],
-      offset:0,
-      hasMore:true,
-      loading:true
-    }
+      books: [],
+      offset: 0,
+      hasMore: true,
+      loading: true
+    };
   },
   components: {
     MHeader
@@ -79,66 +80,71 @@ export default {
   },
   created() {
     // 初始化获取books数据
-    this.getBook()
+    this.getBook();
   },
   computed: {},
   methods: {
-    async getBook(){
-      this.loading = true
-      let {hasMore,books} = await pagination(this.offset)
+    async getBook() {
+      this.loading = true;
+      let { hasMore, books } = await pagination(this.offset);
       //this.books = this.books.concat(books)
-      this.books = [...this.books,...books]
-      this.offset = this.books.length
-      this.hasMore = hasMore
-      this.loading = false
+      this.books = [...this.books, ...books];
+      this.offset = this.books.length;
+      this.hasMore = hasMore;
+      this.loading = false;
     },
-    async deleted(id){
-      await removeBooks(id)
-      this.getBook()
+    async deleted(id) {
+      await removeBooks(id);
+      this.offset = 0;
+      this.books = [];
+      this.getBook();
     },
-    getMore(){
-      if(this.hasMore&&!this.loading) this.getBook()
+    async addToCart(book) {
+      await toCart(book)
     },
-    loadMore(){
-      clearTimeout(this.timer) //防抖
+    getMore() {
+      if (this.hasMore && !this.loading) this.getBook();
+    },
+    loadMore() {
+      clearTimeout(this.timer); //防抖
       this.timer = setTimeout(() => {
-        let {scrollTop,clientHeight,scrollHeight} = this.$refs.scroll //居然有，居然可以结构出来
-        if(scrollTop+clientHeight+10>scrollHeight){
-          this.getMore()
+        let { scrollTop, clientHeight, scrollHeight } = this.$refs.scroll; //居然有，居然可以结构出来
+        if (scrollTop + clientHeight + 10 > scrollHeight) {
+          this.getMore();
         }
       }, 50);
     }
   }
-}
+};
 </script>
 <style lang="less" scoped>
-  .booksList{
-    ul{
-      li{
-        clear: both;
-        margin-top: 20px;
+.booksList {
+  ul {
+    li {
+      clear: both;
+      margin-top: 20px;
+      overflow: hidden;
+      img {
+        display: block;
+        float: left;
+        width: 30%;
+      }
+      .text {
         overflow: hidden;
-        img{
-          display: block;
-          float: left;
-          width: 30%;
+        padding: 0 0 5px 5px;
+        h3 {
+          font-size: 16px;
+          padding-right: 15px;
         }
-        .text{
-          overflow: hidden;
-          padding: 0 0 5px 5px;
-          h3{
-            font-size: 16px;
-            padding-right: 15px;
-          }
-          p{
-            color: #999;
-            font-size: 12px;
-          }
-          button{
-            display: block;
-          }
+        p {
+          color: #999;
+          font-size: 12px;
+        }
+        button {
+          display: block;
         }
       }
     }
   }
+}
 </style>

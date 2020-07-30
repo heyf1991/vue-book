@@ -52,3 +52,13 @@ export let getAll = ()=>{
 export let pagination = (offset)=>{
   return axios.get(`/page?offset=${offset}`);
 }
+
+//8. 添加到购物车
+export let toCart = (data)=>{
+  return axios.post(`/cart`,data);
+}
+
+//8. 展示购物车所有图书信息
+export let getCart = ()=>{
+  return axios.get("/cart");
+}

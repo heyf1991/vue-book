@@ -1,14 +1,17 @@
 <template>
   <div>
-    collect
+    <Counter></Counter>
   </div>
 </template>
 <script>
+import Counter from './components/Counter'
 export default {
   data() {
     return {}
   },
-  components: {},
+  components: {
+    Counter
+  },
   created() {},
   computed: {},
   methods: {}
